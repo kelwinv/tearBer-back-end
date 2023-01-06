@@ -22,12 +22,18 @@ class GuestService {
       });
 
       if (checkGuestExistence) {
-        throw new BadRequestException('Esse nome ja está em uso');
+        throw new HttpException(
+          'Esse nome ja está em uso',
+          HttpStatus.CONFLICT,
+        );
       }
       const randomGifts = await this.giftService.getRandomGifts();
 
       if (randomGifts.length <= 0) {
-        throw new BadRequestException('Não há presentes disponíveis');
+        throw new HttpException(
+          'Não há presentes disponíveis',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       const guest = await this.prisma.guest.create({
@@ -41,7 +47,7 @@ class GuestService {
 
       return guest;
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw error;
     }
   }
 

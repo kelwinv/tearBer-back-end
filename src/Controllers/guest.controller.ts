@@ -16,7 +16,7 @@ class GuestController {
     } catch (error) {
       console.log(error);
 
-      res.json({ error: error.message }).status(500);
+      res.json({ error: error.message, status: error.status });
     }
   }
 
