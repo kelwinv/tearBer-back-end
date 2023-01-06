@@ -9,3 +9,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Guest {
+  id         String  @id @default(uuid())
+  name       String
+  attendance Boolean @default(false)
+  gifts      Gift[]
+}
+
+model Gift {
+  id       String  @id @default(uuid())
+  name     String
+  image    String
+  price    Int
+  quantity Int     @default(0)
+  guests   Guest[]
+}
