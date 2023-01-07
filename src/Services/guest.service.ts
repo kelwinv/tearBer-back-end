@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Guest } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { GiftService } from './gift.service';
@@ -30,10 +25,8 @@ class GuestService {
       const randomGifts = await this.giftService.getRandomGifts();
 
       if (randomGifts.length <= 0) {
-        throw new HttpException(
-          'Não há presentes disponíveis',
-          HttpStatus.NOT_FOUND,
-        );
+        const gifts = await this.giftService.getRandomGiftWithoutPrice();
+        randomGifts.push(...gifts);
       }
 
       const guest = await this.prisma.guest.create({

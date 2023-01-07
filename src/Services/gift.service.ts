@@ -58,7 +58,15 @@ class GiftService {
     return gifts;
   }
 
-  private async getRandomGift(gifts_ids: string[]): Promise<Gift | null> {
+  async getRandomGiftWithoutPrice(): Promise<Gift[]> {
+    const availableGifts = await this.prisma.gift.findMany({
+      take: 3,
+    });
+
+    return availableGifts;
+  }
+
+  async getRandomGift(gifts_ids: string[]): Promise<Gift | null> {
     // Obtém todos os presentes que ainda têm quantidade disponível
     const availableGifts = await this.prisma.gift.findMany({
       where: {
