@@ -34,3 +34,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+conn_cloud.sh
+cred.json
+cloud_sql_proxy
