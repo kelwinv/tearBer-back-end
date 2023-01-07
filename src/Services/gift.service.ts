@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Gift, Prisma } from '@prisma/client';
+import { giftDTo } from 'src/Controllers/gifts.controller';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -12,12 +13,24 @@ class GiftService {
     });
   }
 
+  async createGifts(gifts: giftDTo[]): Promise<Gift[]> {
+    const gifts_saved: Gift[] = [];
+    for await (const gift of gifts) {
+      const gift_saved = await this.prisma.gift.create({
+        data: gift,
+      });
+      gifts_saved.push(gift_saved);
+    }
+
+    return gifts_saved;
+  }
+
   async getRandomGifts(): Promise<Gift[]> {
     const gifts: Gift[] = [];
     let totalPrice = 0;
 
     try {
-      while (totalPrice < 45 || totalPrice > 55) {
+      while (totalPrice <= 50) {
         const gift = await this.getRandomGift(gifts.map(({ id }) => id));
 
         if (gift) {
